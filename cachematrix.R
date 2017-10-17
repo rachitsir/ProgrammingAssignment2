@@ -1,33 +1,44 @@
-# Programming assignment 2
+# Program to cache matrix inversion
 
-# this function creates a vector cached inverse is to be found 
-makeVector <- function(x = matrix()) {
-  m <- NULL
+
+# Matrix inversion is  a costly computation usually 
+# A solution is to cache the inverse of a matrix rather than compute it repeatedly.
+# The following two functions are used to cache the inverse of a matrix.
+
+makeCacheMatrix <- function(x = matrix()) {
+  inverse<- NULL
   
-  set<- function(y){
-    x <<- y
-    m <<- NULL
+  set<- function(y){  # sets the value of the matrix
+    x<<-y
+    inverse_value=NULL
   }
-  get <- function() x
+  get <- function() x # returns the value of the matrix
   
-  setmean<- function(mean) m <<- mean
-  getmean<- function() m
-  list(set = set, get = get, setmean = setmean, getmean = getmean)
+  setinv<- function(inverse) inverse_value <<- inverse # sets the value of the inverse matrix
+  getinv<- function() inverse_value # returns the value of the inverse matrix
+  
+  list(set=set, get=get, setinv=setinv, getinv= getinv)
 }
 
+# this functions Return a matrix that is the inverse of 'x'
+# firstly it checks the inverse has already been computed.
+#If inverse has been already completed it displays the result and skips the computation.
+# Else, it computes the inverse and sets the value in the cache using setinverse function.
 
-# this functions returns a matrix that is the inverse of 'x'
-cacheMean <- function(x, ...) {
 
-  m <- x$getmean()
+cacheSolve <- function(x, ...) {
+
+  inverse_value<- x$getinv()
   
-  if(!is.null(m)){
-    message('getting cached data')
-    return(m)
+  if(!is.null(inverse_value)){
+    message('Inverse Value is Cached ')
+    return(inverse_value)
   }
   
-  data <- x$get()
-  m <- solve(data, ...)
-  x$setmean(m)
-  m
+  y<- x$get()
+  inverse_value<= solve(y, ...)
+  
+  x$setinv(inverse_value)
+  
+  return(inverse_value)
 }
